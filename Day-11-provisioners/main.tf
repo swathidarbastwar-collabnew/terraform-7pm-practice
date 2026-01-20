@@ -82,16 +82,16 @@ resource "aws_security_group" "webSg" {
 # EC2 Instance (Ubuntu)
 resource "aws_instance" "server" {
   ami                         = "ami-0261755bbcb8c4a84" # Ubuntu AMI
-  instance_type               = "t2.micro"
+  instance_type               = "t3.micro"
   key_name                    = aws_key_pair.example.key_name
   subnet_id                   = aws_subnet.sub1.id
   vpc_security_group_ids      = [aws_security_group.webSg.id]
   associate_public_ip_address = true
 
   tags = {
-    Name = "UbuntuServer"
+    Name = "UbuntuServer1"
   }
-
+  /*
   connection {
     type        = "ssh"
     user        = "ubuntu"                          # ✅ Correct for Ubuntu AMIs
@@ -114,10 +114,9 @@ resource "aws_instance" "server" {
     provisioner "local-exec" {
      command = "touch file500" 
    
-  }
+  } */
  }
 
- /*
 resource "null_resource" "run_script" {
   provisioner "remote-exec" {
     connection {
@@ -127,7 +126,7 @@ resource "null_resource" "run_script" {
     }
 
     inline = [
-      "echo 'hello from awsdevops' >> /home/ubuntu/file200"
+      "echo 'hello from vishal here' > /home/ubuntu/file200"
     ]
   }
 
@@ -135,7 +134,6 @@ resource "null_resource" "run_script" {
     always_run = "${timestamp()}" # Forces rerun every time
   }
 }
-*/
 
 #Solution-2 to Re-Run the Provisioner
 #Use terraform taint to manually mark the resource for recreation:
